@@ -2,40 +2,33 @@
 
 namespace OOPStore;
 
-define('CLASSES_DIR', __DIR__ . DIRECTORY_SEPARATOR .'classes');
-define('INTERFACES_DIR', __DIR__ . DIRECTORY_SEPARATOR .'interfaces');
+// define('CLASSES_DIR', __DIR__ . DIRECTORY_SEPARATOR .'classes');
+// define('INTERFACES_DIR', __DIR__ . DIRECTORY_SEPARATOR .'interfaces');
 
 // require_once(CLASSES_DIR . '/Category.php')
 //// http://php.net/manual/en/function.dir.php 
 
-function requireDir($dir)
-{
-    $d = dir($dir);
-}
+spl_autoload_register(function ($class) {
+    // var_dump($class);
+    $classFilename = __DIR__ . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR
+        . str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
 
-$d = dir(INTERFACES_DIR);
-while(false !== ($classFile = $d->read())) {
-    if($classFile === '.' || $classFile === '..') {
-        continue;
-    }
-    require_once(INTERFACES_DIR . DIRECTORY_SEPARATOR . $classFile);
-}
+        require $classFilename;
+});
 
-requireDir(INTERFACES_DIR);
-requireDir(CLASSES_DIR);
 
 $category = new Category('TV');
-
+print_r($category->getName());
 $product1 = new Product($category, 'LG LX32', 10000);
-$product2 = new Product($category, 'LG LX32', 10000);
+// $product2 = new Product($category, 'LG LX32', 10000);
 
-$store = new Store();
+// $store = new Store();
 
-$store->addProduct($product1);
-$store->addProduct($product1);
-$store->addProduct($product2);
-$store->removeProduct($product1);
-print_r($store->getProducts());
+// $store->addProduct($product1);
+// $store->addProduct($product1);
+// $store->addProduct($product2);
+// $store->removeProduct($product1);
+// print_r($store->getProducts());
 
 // $customer = new Customer('', '');
 // $cart = new \OOPStore\Cart($customer);
@@ -48,8 +41,3 @@ print_r($store->getProducts());
 // $purchase = $cart->createPurchase();
 // $cart->addProduct($product);
 // var_dump($cart->getTotal());
-
-
-
-
-
